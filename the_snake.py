@@ -114,7 +114,7 @@ class Money(Apple):
     def draw_quantity(self,
                       text_color: tuple[int, int, int] = (255, 255, 0)
                       ) -> None:
-        """"Отображает на экране текующее количество собранных монеток."""
+        """Отображает на экране текующее количество собранных монеток."""
         font = pygame.font.Font(size=36)
         text = font.render(str(self.quantity), False, text_color)
         text_rect = text.get_rect(center=(20, 20))
@@ -276,6 +276,9 @@ def handle_keys(game_object: Snake, button: Button) -> None:
 
 
 def main():
+    """Главная функция игры.
+    Инициализирует объекты, запускает основной цикл игры.
+    """
     pygame.init()
     snake = Snake()
     apple = Apple()
@@ -322,12 +325,17 @@ def main():
             position_x, position_y = snake.get_head_position()
 
             # Змейка сталкивается со своими сегментами или выходит за край.
-            if ((snake.length >= 2
-                 and snake.get_head_position() in snake.positions[1:]
-                 )
-                    or position_x < 0 or position_x >= SCREEN_WIDTH
-                    or position_y < 0 or position_y >= SCREEN_HEIGHT
-                ):
+            colides_with_self = (
+                snake.length >= 2
+                and snake.get_head_position() in snake.positions[1:]
+            )
+            out_of_bounds = (
+                position_x < 0
+                or position_x >= SCREEN_WIDTH
+                or position_y < 0
+                or position_y >= SCREEN_HEIGHT
+            )
+            if colides_with_self or out_of_bounds:
                 apple.randomize_position()
                 money.randomize_position()
                 money.quantity = 0
