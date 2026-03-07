@@ -47,12 +47,12 @@ clock = pygame.time.Clock()
 
 # Тут опишите все классы игры.
 class GameObject:
-    '''Базовый класс игрового объекта.
+    """Базовый класс игрового объекта.
 
     Attributes:
         body_color (tuple): Цвет объекта.
         position (tuple): Позиция на игровом поле.
-    '''
+    """
 
     def __init__(self,
                  body_color=(255, 255, 255),
@@ -69,12 +69,12 @@ class GameObject:
 
 
 class Apple(GameObject):
-    '''Класс Яблока, унаследованный от GameObject.
+    """Класс Яблока, унаследованный от GameObject.
 
     Attributes:
         body_color (tuple): Цвет объекта.
         position (tuple): Позиция на игровом поле.
-    '''
+    """
 
     def __init__(self, body_color=(255, 0, 0)):
         super().__init__(body_color=body_color)
@@ -91,13 +91,13 @@ class Apple(GameObject):
 
 
 class Money(Apple):
-    '''Класс Монеток, унаследованный от Apple.
+    """Класс Монеток, унаследованный от Apple.
 
     Attributes:
         body_color (tuple): Цвет объекта.
         position (tuple): Позиция на игровом поле.
         quantity (int): Количество собранных монеток.
-    '''
+    """
 
     def __init__(self, body_color=(255, 255, 0)):
         super().__init__(body_color=body_color)
@@ -111,7 +111,7 @@ class Money(Apple):
 
 
 class Snake(GameObject):
-    '''Класс Змейки, унаследованный от GameObject.
+    """Класс Змейки, унаследованный от GameObject.
 
     Attributes:
         body_color (tuple): Цвет объекта.
@@ -122,7 +122,7 @@ class Snake(GameObject):
         next_direction (tuple): Следующее направление змейки.
         eaten_apple (bool): Флаг для обозначения, съедено ли яблоко.
         __last (tuple): Хвост змейки. Последний элемент positions.
-    '''
+    """
 
     def __init__(self,
                  length=1,
@@ -195,7 +195,7 @@ class Snake(GameObject):
 
 
 class Button:
-    '''Класс кнопки.
+    """Класс кнопки.
 
     Attributes:
         rect (pygame.Rect): Прямоугольник, задающий размер и положение кнопки.
@@ -204,7 +204,7 @@ class Button:
         background_color (tuple): Цвет фона кнопки.
         text (str): Текст, отображаемый на кнопке.
         text_color (tuple): Цвет текста кнопки.
-    '''
+    """
 
     def __init__(self,
                  rect,
@@ -229,7 +229,7 @@ class Button:
 
 
 def handle_keys(game_object, button):
-    '''Keylogger для кнопки и змейки.'''
+    """Keylogger для кнопки и змейки."""
     global STATE
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
