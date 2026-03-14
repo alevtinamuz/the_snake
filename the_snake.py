@@ -32,7 +32,7 @@ APPLE_COLOR = RED
 SNAKE_COLOR = GREEN
 MONEY_COLOR = YELLOW
 BORDER_COLOR = (93, 216, 228)
-BOARD_BACKGROUND_COLOR= BLACK
+BOARD_BACKGROUND_COLOR = BLACK
 MONEY_TEXT_COLOR = YELLOW
 
 # Цвета для интерфейса
@@ -60,12 +60,14 @@ class GameObject:
         position (tuple): Позиция на игровом поле.
     """
 
-    def __init__(self,
-                 body_color: tuple[int, int, int] = WHITE,
-                 position: tuple[int, int] = (GRID_WIDTH // 2 * GRID_SIZE,
-                                              GRID_HEIGHT // 2 * GRID_SIZE
-                                              )
-                 ) -> None:
+    def __init__(
+        self,
+        body_color: tuple[int, int, int] = WHITE,
+        position: tuple[int, int] = (
+            GRID_WIDTH // 2 * GRID_SIZE,
+            GRID_HEIGHT // 2 * GRID_SIZE
+        )
+    ) -> None:
         self.position = position
         self.body_color = body_color
 
@@ -88,27 +90,27 @@ class Apple(GameObject):
         position (tuple): Позиция на игровом поле.
     """
 
-    def __init__(self,
-                 snake_positions: list[tuple[int, int]],
-                 body_color: tuple[int, int, int] = APPLE_COLOR
-                ) -> None:
+    def __init__(
+        self,
+        snake_positions: list[tuple[int, int]],
+        body_color: tuple[int, int, int] = APPLE_COLOR
+    ) -> None:
         """Инициализция яблока красным цветом."""
         super().__init__(body_color=body_color)
         self.randomize_position(snake_positions)
 
-    def randomize_position(self,
-                           snake_positions: list[tuple[int, int]]
-                          ) -> None:
+    def randomize_position(
+        self,
+        snake_positions: list[tuple[int, int]]
+    ) -> None:
         """Устанавливает случайную позицию для яблока.
         И проверяет не находится ли там сейчас змея.
         """
-        self.position = (randint(0, GRID_WIDTH - 1) * GRID_SIZE, 
-                         randint(0, GRID_HEIGHT - 1) * GRID_SIZE
-                        )
         while self.position in snake_positions:
-            self.position = (randint(0, GRID_WIDTH - 1) * GRID_SIZE, 
-                            randint(0, GRID_HEIGHT - 1) * GRID_SIZE
-                           )
+            self.position = (
+                randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+                randint(0, GRID_HEIGHT - 1) * GRID_SIZE
+            )
 
     def draw(self) -> None:
         """Отрисовывает яблоко в виде квадрата."""
@@ -126,19 +128,22 @@ class Money(Apple):
         quantity (int): Количество собранных монеток.
     """
 
-    def __init__(self,
-                 snake_positions: list[tuple[int, int]],
-                 body_color: tuple[int, int, int] = MONEY_COLOR
-                 ) -> None:
+    def __init__(
+        self,
+        snake_positions: list[tuple[int, int]],
+        body_color: tuple[int, int, int] = MONEY_COLOR
+    ) -> None:
         """Инициализация монетки желтым цветом. Счетчик равен нулю."""
-        super().__init__(snake_positions=snake_positions,
-                         body_color=body_color
-                        )
+        super().__init__(
+            snake_positions=snake_positions,
+            body_color=body_color
+        )
         self.quantity = 0
 
-    def draw_quantity(self,
-                      text_color: tuple[int, int, int] = MONEY_TEXT_COLOR
-                      ) -> None:
+    def draw_quantity(
+        self,
+        text_color: tuple[int, int, int] = MONEY_TEXT_COLOR
+    ) -> None:
         """Отображает на экране текующее количество собранных монеток."""
         font = pg.font.Font(size=36)
         text = font.render(str(self.quantity), False, text_color)
@@ -161,9 +166,10 @@ class Snake(GameObject):
         __last (tuple): Хвост змейки. Последний элемент positions.
     """
 
-    def __init__(self,
-                 body_color: tuple[int, int, int] = SNAKE_COLOR
-                 ) -> None:
+    def __init__(
+        self,
+        body_color: tuple[int, int, int] = SNAKE_COLOR
+    ) -> None:
         """Инициализация змейки зеленым цветом, длиной равной единице,
         направлением движения вправо.
         """
@@ -182,7 +188,7 @@ class Snake(GameObject):
         """
         next_position_x, next_position_y = self.get_head_position()
         direction_x, direction_y = self.direction
-        
+
         next_position_x += direction_x * GRID_SIZE
         next_position_y += direction_y * GRID_SIZE
 
@@ -235,14 +241,15 @@ class Button:
         text_color (tuple): Цвет текста кнопки.
     """
 
-    def __init__(self,
-                 rect: pg.Rect,
-                 font: pg.font.Font,
-                 action: int = STATE,
-                 background_color: tuple[int, int, int] = BUTTON_BACKGROUND_COLOR,
-                 text: str = 'Start',
-                 text_color: tuple[int, int, int] = BUTTON_TEXT_COLOR,
-                 ) -> None:
+    def __init__(
+        self,
+        rect: pg.Rect,
+        font: pg.font.Font,
+        action: int = STATE,
+        background_color: tuple[int, int, int] = BUTTON_BACKGROUND_COLOR,
+        text: str = 'Start',
+        text_color: tuple[int, int, int] = BUTTON_TEXT_COLOR,
+    ) -> None:
         """Инициализация кнопки с определенным положением, шрифтом,
         цветом заднего фона, цветом текста, текстом, действием.
         """
@@ -293,13 +300,15 @@ def main():
     snake = Snake()
     apple = Apple(snake.positions)
     money = Money(snake.positions)
-    start_button = Button(rect=pg.Rect((GRID_WIDTH // 2 * GRID_SIZE - 100,
-                                        GRID_HEIGHT // 2 * GRID_SIZE - 50
-                                       ),
-                                       (200, 100)
-                                      ),
-                          font=pg.font.Font(None, size=36),
-                          )
+    start_button = Button(
+        rect=pg.Rect((
+            GRID_WIDTH // 2 * GRID_SIZE - 100,
+            GRID_HEIGHT // 2 * GRID_SIZE - 50
+            ),
+            (200, 100)
+        ),
+        font=pg.font.Font(None, size=36),
+    )
 
     while True:
         clock.tick(SPEED)
