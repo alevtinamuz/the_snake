@@ -276,8 +276,10 @@ def handle_keys(game_object: Snake, button: Button) -> None:
             pg.quit()
             raise SystemExit
         if STATE == MENU:
-            if event.type == pg.MOUSEBUTTONDOWN:
-                if button.rect.collidepoint(event.pos):
+            if (
+                event.type == pg.MOUSEBUTTONDOWN 
+                and button.rect.collidepoint(event.pos)
+            ):
                     STATE = GAME
                     game_object.reset()
         elif STATE == GAME:
@@ -301,9 +303,10 @@ def main():
     apple = Apple(snake.positions)
     money = Money(snake.positions)
     start_button = Button(
-        rect=pg.Rect((
-            GRID_WIDTH // 2 * GRID_SIZE - 100,
-            GRID_HEIGHT // 2 * GRID_SIZE - 50
+        rect=pg.Rect(
+            (
+                GRID_WIDTH // 2 * GRID_SIZE - 100,
+                GRID_HEIGHT // 2 * GRID_SIZE - 50
             ),
             (200, 100)
         ),
@@ -314,8 +317,8 @@ def main():
         clock.tick(SPEED)
         handle_keys(snake, start_button)
 
-        if STATE == MENU: 
-            start_button.draw() 
+        if STATE == MENU:
+            start_button.draw()
 
         elif STATE == GAME:
             snake.update_direction()
