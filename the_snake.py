@@ -92,11 +92,14 @@ class Apple(GameObject):
 
     def __init__(
         self,
-        snake_positions: list[tuple[int, int]] | None = None,
+        snake_positions: list[tuple[int, int]] = None,
         body_color: tuple[int, int, int] = APPLE_COLOR
     ) -> None:
         """Инициализция яблока красным цветом."""
         super().__init__(body_color=body_color)
+        snake_positions = (
+            snake_positions if snake_positions is not None else []
+        )
         self.randomize_position(snake_positions)
 
     def randomize_position(
