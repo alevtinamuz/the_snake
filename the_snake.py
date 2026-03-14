@@ -268,30 +268,42 @@ class Button:
         screen.blit(text, text_rect)
 
 
+def handle_quit(event: pg.event) -> None:
+    if event.type == pg.QUIT:
+        pg.quit()
+        raise SystemExit
+
+
+def handle_menu_click(event: pg.event, button: Button) -> bool:
+    return(
+        event.type == pg.MOUSEBUTTONDOWN
+        and button.rect.collidepoint(event.pos)
+    )
+
+
+def handle_game_key(event: pg.event, game_object: Snake) -> None:
+    if event.type == pg.KEYDOWN:
+        if event.key == pg.K_UP and game_object.direction != DOWN:
+            game_object.next_direction = UP
+        elif event.key == pg.K_DOWN and game_object.direction != UP:
+            game_object.next_direction = DOWN
+        elif event.key == pg.K_LEFT and game_object.direction != RIGHT:
+            game_object.next_direction = LEFT
+        elif event.key == pg.K_RIGHT and game_object.direction != LEFT:
+            game_object.next_direction = RIGHT
+
+
 def handle_keys(game_object: Snake, button: Button) -> None:
     """Keylogger для кнопки и змейки."""
     global STATE
     for event in pg.event.get():
-        if event.type == pg.QUIT:
-            pg.quit()
-            raise SystemExit
+        handle_quit(event)
         if STATE == MENU:
-            if (
-                event.type == pg.MOUSEBUTTONDOWN 
-                and button.rect.collidepoint(event.pos)
-            ):
-                    STATE = GAME
-                    game_object.reset()
+            if handle_menu_click(event, button):
+                STATE = GAME
+                game_object.reset()
         elif STATE == GAME:
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_UP and game_object.direction != DOWN:
-                    game_object.next_direction = UP
-                elif event.key == pg.K_DOWN and game_object.direction != UP:
-                    game_object.next_direction = DOWN
-                elif event.key == pg.K_LEFT and game_object.direction != RIGHT:
-                    game_object.next_direction = LEFT
-                elif event.key == pg.K_RIGHT and game_object.direction != LEFT:
-                    game_object.next_direction = RIGHT
+            handle_game_key(event, game_object)
 
 
 def main():
