@@ -92,7 +92,7 @@ class Apple(GameObject):
 
     def __init__(
         self,
-        snake_positions: list[tuple[int, int]] = [()],
+        snake_positions: list[tuple[int, int]] | None = None,
         body_color: tuple[int, int, int] = APPLE_COLOR
     ) -> None:
         """Инициализция яблока красным цветом."""
