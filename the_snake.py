@@ -269,19 +269,24 @@ class Button:
 
 
 def handle_quit(event: pg.event) -> None:
+    """Обрабатывает событие выхода из игры."""
     if event.type == pg.QUIT:
         pg.quit()
         raise SystemExit
 
 
 def handle_menu_click(event: pg.event, button: Button) -> bool:
-    return(
+    """Обрабатывает событие нажатие по стартовой кнопке."""
+    return (
         event.type == pg.MOUSEBUTTONDOWN
         and button.rect.collidepoint(event.pos)
     )
 
 
 def handle_game_key(event: pg.event, game_object: Snake) -> None:
+    """Обрабытывает движения змейки.
+    Обновляет snake.direction в зависимости от нажатой кнопки.
+    """
     if event.type == pg.KEYDOWN:
         if event.key == pg.K_UP and game_object.direction != DOWN:
             game_object.next_direction = UP
@@ -294,7 +299,7 @@ def handle_game_key(event: pg.event, game_object: Snake) -> None:
 
 
 def handle_keys(game_object: Snake, button: Button) -> None:
-    """Keylogger для кнопки и змейки."""
+    """Общий Keylogger. Обрабатывает все события в зависимости от STATE."""
     global STATE
     for event in pg.event.get():
         handle_quit(event)
