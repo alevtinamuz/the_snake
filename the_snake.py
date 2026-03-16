@@ -72,14 +72,11 @@ class GameObject:
         self.body_color = body_color
 
     @abstractmethod
-    def draw(self) -> None:
-        """Отрисовывает объект на экране.
-        Должен быть переопределен в потомках.
-        """
-        raise NotImplementedError(
-            f'Класс {self.__class__.__name__}'
-            'не реализует обязательный метод draw().'
-        )
+    def draw(self, position) -> None:
+        """Отрисовывает один объект на экране."""
+        rect = pg.Rect(position, (GRID_SIZE, GRID_SIZE))
+        pg.draw.rect(screen, self.body_color, rect)
+        pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
 class Apple(GameObject):
@@ -97,10 +94,7 @@ class Apple(GameObject):
     ) -> None:
         """Инициализция яблока красным цветом."""
         super().__init__(body_color=body_color)
-        snake_positions = (
-            snake_positions if snake_positions is not None else []
-        )
-        self.randomize_position(snake_positions)
+        self.randomize_position(snake_positions or [])
 
     def randomize_position(
         self,
@@ -109,17 +103,17 @@ class Apple(GameObject):
         """Устанавливает случайную позицию для яблока.
         И проверяет не находится ли там сейчас змея.
         """
-        while self.position in snake_positions:
+        while True:
             self.position = (
                 randint(0, GRID_WIDTH - 1) * GRID_SIZE,
                 randint(0, GRID_HEIGHT - 1) * GRID_SIZE
             )
+            if self.position not in snake_positions:
+                break
 
     def draw(self) -> None:
         """Отрисовывает яблоко в виде квадрата."""
-        rect = pg.Rect(self.position, (GRID_SIZE, GRID_SIZE))
-        pg.draw.rect(screen, self.body_color, rect)
-        pg.draw.rect(screen, BORDER_COLOR, rect, 1)
+        super().draw(self.position)
 
 
 class Money(Apple):
@@ -207,9 +201,7 @@ class Snake(GameObject):
     def draw(self) -> None:
         """Отрисовывает голову и сегменты тела змейки. Затирает хвост."""
         # Отрисовка головы змейки
-        head_rect = pg.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
-        pg.draw.rect(screen, self.body_color, head_rect)
-        pg.draw.rect(screen, BORDER_COLOR, head_rect, 1)
+        super().draw(self.get_head_position())
 
         # Затирание последнего сегмента
         if self.__last:
@@ -353,7 +345,6 @@ def main():
             # Змейка собирает монетку.
             elif snake.get_head_position() == money.position:
                 money.randomize_position(snake.positions)
-
                 money.quantity += 1
 
             position_x, position_y = snake.get_head_position()
